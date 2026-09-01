@@ -90,13 +90,29 @@
             text-shadow: 0 2px 5px black;
             pointer-events: none;
         }
+
+        #musicButton {
+            position: fixed;
+            top: 58px;
+            right: 15px;
+            z-index: 9999;
+            border: 0;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            background: rgba(20,20,20,0.85);
+            color: white;
+            font-size: 18px;
+        }
     </style>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
 
+    <!-- EXISTING HEADING — KEPT -->
     <div id="title">IMMERSIVE INDIA</div>
 
+    <!-- EXISTING BUTTONS — KEPT -->
     <button id="companyButton" class="ui-button">
         Learn About Company
     </button>
@@ -109,6 +125,7 @@
         About Experience
     </button>
 
+    <!-- INFORMATION PANELS — KEPT -->
     <div id="companyPanel" class="info-panel">
         <h2>About the Company</h2>
         <p>
@@ -142,6 +159,17 @@
         <button class="close-button" onclick="closePanels()">Close</button>
     </div>
 
+    <!-- MUSIC CONTROL -->
+    <button id="musicButton">🔇</button>
+
+    <!-- MUSIC -->
+    <audio
+        id="backgroundMusic"
+        src="assets/delosound-mystery-mystical-music-442826.mp3"
+        loop
+        preload="auto">
+    </audio>
+
     <a-scene
         vr-mode-ui="enabled: false;"
         loading-screen="enabled: false;"
@@ -162,14 +190,25 @@
             id="markerA"
         >
 
+            <!-- WELCOME TEXT IS INSIDE THE AR WORLD -->
+            <a-text
+                value="WELCOME!"
+                align="center"
+                color="#FFFFFF"
+                width="3"
+                position="0 1.2 0"
+                rotation="-90 0 0">
+            </a-text>
+
+            <!-- YOUR 3D MUTATING CUBE -->
             <a-entity
                 gltf-model="url(assets/Mutating-Cube.glb)"
                 position="0 0 0"
                 scale="0.5 0.5 0.5"
                 rotation="0 0 0"
                 class="clickable"
-                gesture-handler
-            ></a-entity>
+                gesture-handler>
+            </a-entity>
 
         </a-marker>
 
@@ -178,6 +217,11 @@
     </a-scene>
 
     <script>
+
+        /* --------------------------------
+           EXISTING BUTTON INTERACTIONS
+        -------------------------------- */
+
         const companyButton = document.getElementById("companyButton");
         const museumButton = document.getElementById("museumButton");
         const aboutButton = document.getElementById("aboutButton");
@@ -206,6 +250,50 @@
             museumPanel.style.display = "none";
             aboutPanel.style.display = "none";
         }
+
+
+        /* --------------------------------
+           BACKGROUND MUSIC
+        -------------------------------- */
+
+        const music = document.getElementById("backgroundMusic");
+        const musicButton = document.getElementById("musicButton");
+
+        let musicStarted = false;
+
+        function startMusic() {
+            if (!musicStarted) {
+                music.volume = 0.35;
+
+                music.play().then(function () {
+                    musicStarted = true;
+                    musicButton.textContent = "🔊";
+                }).catch(function () {
+                    console.log("Music waiting for user interaction.");
+                });
+            }
+        }
+
+        /*
+         * Mobile browsers usually require user interaction
+         * before allowing audio to play.
+         */
+        document.addEventListener("click", startMusic, { once: true });
+
+        musicButton.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            if (music.paused) {
+                music.play();
+                musicButton.textContent = "🔊";
+            } else {
+                music.pause();
+                musicButton.textContent = "🔇";
+            }
+
+        });
+
     </script>
 
 </body>
