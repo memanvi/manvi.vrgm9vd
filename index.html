@@ -1,41 +1,214 @@
 <!doctype html>
+
 <html>
     <head>
         <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    </head>
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            vr-mode-ui="enabled: false;"
-            loading-screen="enabled: false;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-            id="scene"
-            embedded
-            gesture-detector
+```
+    <style>
+        .ui-button {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            padding: 13px 18px;
+            border: 0;
+            border-radius: 25px;
+            background: rgba(20, 20, 20, 0.88);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        #companyButton {
+            bottom: 125px;
+        }
+
+        #museumButton {
+            bottom: 70px;
+        }
+
+        #aboutButton {
+            bottom: 15px;
+        }
+
+        .info-panel {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 78%;
+            max-width: 380px;
+            padding: 24px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.96);
+            color: #111;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            z-index: 10000;
+            box-sizing: border-box;
+        }
+
+        .info-panel h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .info-panel p {
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .close-button {
+            margin-top: 12px;
+            padding: 10px 20px;
+            border: 0;
+            border-radius: 20px;
+            background: #111;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #title {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            z-index: 9999;
+            text-shadow: 0 2px 5px black;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; overflow: hidden;">
+
+    <div id="title">IMMERSIVE INDIA</div>
+
+    <button id="companyButton" class="ui-button">
+        Learn About Company
+    </button>
+
+    <button id="museumButton" class="ui-button">
+        Explore Museums
+    </button>
+
+    <button id="aboutButton" class="ui-button">
+        About Experience
+    </button>
+
+    <div id="companyPanel" class="info-panel">
+        <h2>About the Company</h2>
+        <p>
+            Discover Immersive India through interactive experiences
+            that bring Indian culture, stories and heritage into a
+            digital space.
+        </p>
+        <button class="close-button" onclick="closePanels()">Close</button>
+    </div>
+
+    <div id="museumPanel" class="info-panel">
+        <h2>Explore Museums</h2>
+        <p>
+            Step into a collection of immersive cultural experiences
+            exploring India's history, traditions, stories and heritage.
+        </p>
+        <p>
+            Discover new stories and perspectives through interactive
+            digital experiences.
+        </p>
+        <button class="close-button" onclick="closePanels()">Close</button>
+    </div>
+
+    <div id="aboutPanel" class="info-panel">
+        <h2>AR Visiting Card</h2>
+        <p>
+            Scan the visiting card to reveal a 3D experience and
+            explore additional information through the interactive
+            buttons.
+        </p>
+        <button class="close-button" onclick="closePanels()">Close</button>
+    </div>
+
+    <a-scene
+        vr-mode-ui="enabled: false;"
+        loading-screen="enabled: false;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        id="scene"
+        embedded
+        gesture-detector
+    >
+
+        <a-marker
+            id="animated-marker"
+            type="pattern"
+            preset="custom"
+            url="assets/marker.patt"
+            raycaster="objects: .clickable"
+            emitevents="true"
+            cursor="fuse: false; rayOrigin: mouse;"
+            id="markerA"
         >
-            <a-marker
-                id="animated-marker"
-                type="pattern"
-                preset="custom"
-                url="assets/marker.patt"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
-            >
-                <a-image
-                    src="assets/asset.png"
-                    scale="1 1 1"
-                    class="clickable"
-                    rotation="-90 0 0"
-                    gesture-handler
-                ></a-image>
-            </a-marker>
 
-            <a-entity camera></a-entity>
-        </a-scene>
-    </body>
+            <a-entity
+                gltf-model="url(assets/Mutating-Cube.glb)"
+                position="0 0 0"
+                scale="0.5 0.5 0.5"
+                rotation="0 0 0"
+                class="clickable"
+                gesture-handler
+            ></a-entity>
+
+        </a-marker>
+
+        <a-entity camera></a-entity>
+
+    </a-scene>
+
+    <script>
+        const companyButton = document.getElementById("companyButton");
+        const museumButton = document.getElementById("museumButton");
+        const aboutButton = document.getElementById("aboutButton");
+
+        const companyPanel = document.getElementById("companyPanel");
+        const museumPanel = document.getElementById("museumPanel");
+        const aboutPanel = document.getElementById("aboutPanel");
+
+        companyButton.addEventListener("click", function () {
+            closePanels();
+            companyPanel.style.display = "block";
+        });
+
+        museumButton.addEventListener("click", function () {
+            closePanels();
+            museumPanel.style.display = "block";
+        });
+
+        aboutButton.addEventListener("click", function () {
+            closePanels();
+            aboutPanel.style.display = "block";
+        });
+
+        function closePanels() {
+            companyPanel.style.display = "none";
+            museumPanel.style.display = "none";
+            aboutPanel.style.display = "none";
+        }
+    </script>
+
+</body>
+```
+
 </html>
