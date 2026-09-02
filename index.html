@@ -388,19 +388,15 @@
             </a-text>
 
             <!-- NEW LIGHTWEIGHT PORTAL MODEL -->
-           <a-entity
+          <a-entity
     id="portalModel"
     gltf-model="url(assets/portal.glb)"
     position="0 0 0"
-    rotation="0 0 0"
+    rotation="-90 0 0"
     scale="0.35 0.35 0.35"
     class="clickable"
     gesture-handler>
-          </a-entity>
-
-        </a-marker>
-
-        <a-entity camera></a-entity>
+        </a-entity>
 
     </a-scene>
 
@@ -413,62 +409,75 @@
     </audio>
 
 
-    <script>
-        const portalModel = document.getElementById("portalModel");
-const neonScreen = document.getElementById("neonScreen");
+   <script>
+    function openPanel(id) {
+        document.getElementById(id).style.display = "block";
+    }
 
-portalModel.addEventListener("click", function () {
-    neonScreen.style.display = "flex";
-});
-        document.getElementById("enterArchive").addEventListener("click", function () {
-    neonScreen.style.display = "none";
-});
-        function openPanel(id) {
-            document.getElementById(id).style.display = "block";
-        }
-
-        function closePanels() {
-            document.querySelectorAll(".panel").forEach(function(panel) {
-                panel.style.display = "none";
-            });
-        }
-
-        const music = document.getElementById("backgroundMusic");
-        const musicButton = document.getElementById("musicButton");
-
-        musicButton.addEventListener("click", function() {
-            if (music.paused) {
-                music.play()
-                    .then(function() {
-                        musicButton.textContent = "🔊";
-                    })
-                    .catch(function(error) {
-                        console.log("Music could not start:", error);
-                    });
-            } else {
-                music.pause();
-                musicButton.textContent = "♫";
-            }
+    function closePanels() {
+        document.querySelectorAll(".panel").forEach(function(panel) {
+            panel.style.display = "none";
         });
+    }
 
-        document.addEventListener("click", function() {
-            if (music.paused) {
-                music.play()
-                    .then(function() {
-                        musicButton.textContent = "🔊";
-                    })
-                    .catch(function() {});
-            }
-        }, { once: true });
-        
-        const portalModel = document.getElementById("portalModel");
 
-if (window.innerWidth >= 700) {
-    portalModel.setAttribute("scale", "0.7 0.7 0.7");
-} else {
-    portalModel.setAttribute("scale", "0.35 0.35 0.35");
-}
-    </script>
+    /* =========================
+       PORTAL + NEON SCREEN
+       ========================= */
 
+    const portalModel = document.getElementById("portalModel");
+    const neonScreen = document.getElementById("neonScreen");
+
+    portalModel.addEventListener("click", function () {
+        neonScreen.style.display = "flex";
+    });
+
+    document.getElementById("enterArchive").addEventListener("click", function () {
+        neonScreen.style.display = "none";
+    });
+
+
+    /* =========================
+       PORTAL SIZE
+       ========================= */
+
+    if (window.innerWidth >= 700) {
+        portalModel.setAttribute("scale", "0.7 0.7 0.7");
+    } else {
+        portalModel.setAttribute("scale", "0.35 0.35 0.35");
+    }
+
+
+    /* =========================
+       MUSIC
+       ========================= */
+
+    const music = document.getElementById("backgroundMusic");
+    const musicButton = document.getElementById("musicButton");
+
+    musicButton.addEventListener("click", function(event) {
+
+        event.stopPropagation();
+
+        if (music.paused) {
+
+            music.play()
+                .then(function() {
+                    musicButton.textContent = "🔊";
+                })
+                .catch(function(error) {
+                    console.log("Music could not start:", error);
+                });
+
+        } else {
+
+            music.pause();
+            musicButton.textContent = "♫";
+
+        }
+
+    });
+
+</script>
 </body>
 </html>
