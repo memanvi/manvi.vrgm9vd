@@ -104,6 +104,43 @@
             color: white;
             font-size: 18px;
         }
+
+        .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 15px;
+}
+
+.social-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: rgba(0, 0, 0, 0.55);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.social-button:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.social-label {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    margin-top: 4px;
+}
     </style>
 </head>
 
@@ -124,6 +161,38 @@
     <button id="aboutButton" class="ui-button">
         About Experience
     </button>
+
+    <div class="social-links">
+
+    <div>
+        <a class="social-button"
+           href="www.linkedin.com/in/manvi-82996a312"
+           target="_blank"
+           rel="noopener">
+            in
+        </a>
+        <div class="social-label">LinkedIn</div>
+    </div>
+
+    <div>
+        <a class="social-button"
+           href="https://memanviportfolio.framer.website/"
+           target="_blank"
+           rel="noopener">
+            ↗
+        </a>
+        <div class="social-label">Portfolio</div>
+    </div>
+
+    <div>
+        <a class="social-button"
+           href="mailto:manvio1.k@gmail.com">
+            ✉
+        </a>
+        <div class="social-label">Mail</div>
+    </div>
+
+</div>
 
     <!-- INFORMATION PANELS — KEPT -->
     <div id="companyPanel" class="info-panel">
@@ -202,12 +271,12 @@
 
             <!-- YOUR 3D MUTATING CUBE -->
             <a-entity
-                gltf-model="url(assets/Mutating-Cube.glb)"
-                position="0 0 0"
-                scale="0.5 0.5 0.5"
-                rotation="0 0 0"
-                class="clickable"
-                gesture-handler>
+    gltf-model="url(assets/Mutating-Cube.glb)"
+    position="0 0.5 0"
+    rotation="0 0 0"
+    scale="1 1 1"
+    class="clickable"
+    gesture-handler>
             </a-entity>
 
         </a-marker>
