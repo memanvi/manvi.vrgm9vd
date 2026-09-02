@@ -161,6 +161,102 @@
             font-size: 16px;
             pointer-events: auto;
         }
+
+        #neonScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center,
+        rgba(120, 70, 255, 0.95) 0%,
+        rgba(65, 30, 180, 0.95) 35%,
+        rgba(15, 10, 70, 1) 75%);
+}
+
+#neonScreen::before {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background: rgba(80, 170, 255, 0.35);
+    filter: blur(80px);
+}
+
+.neonContent {
+    position: relative;
+    z-index: 2;
+    width: 85%;
+    max-width: 430px;
+    text-align: center;
+    color: white;
+}
+
+.neonTitle {
+    font-size: 13px;
+    letter-spacing: 5px;
+    margin-bottom: 35px;
+    text-shadow:
+        0 0 8px #9b7cff,
+        0 0 20px #3f8cff;
+}
+
+.neonPortal {
+    font-size: 80px;
+    margin-bottom: 15px;
+    text-shadow:
+        0 0 10px #ffffff,
+        0 0 25px #9b7cff,
+        0 0 50px #398cff;
+    animation: neonPulse 1.8s infinite alternate;
+}
+
+.neonContent h1 {
+    font-size: 25px;
+    letter-spacing: 3px;
+    margin: 10px 0;
+    text-shadow:
+        0 0 10px #ffffff,
+        0 0 25px #657cff;
+}
+
+.neonContent p {
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin: 15px auto 30px;
+    max-width: 300px;
+}
+
+#enterArchive {
+    padding: 13px 35px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-size: 13px;
+    letter-spacing: 2px;
+    box-shadow:
+        0 0 12px rgba(120,150,255,0.8),
+        inset 0 0 15px rgba(120,100,255,0.2);
+}
+
+@keyframes neonPulse {
+    from {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    to {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+        
     </style>
 </head>
 
@@ -243,6 +339,27 @@
 
     </div>
 
+    <div id="neonScreen">
+
+    <div class="neonContent">
+
+        <div class="neonTitle">IMMERSIVE INDIA</div>
+
+        <div class="neonPortal">✦</div>
+
+        <h1>ENTER THE ARCHIVE</h1>
+
+        <p>
+            Explore India's stories, traditions and hidden worlds.
+        </p>
+
+        <button id="enterArchive">
+            ENTER
+        </button>
+
+    </div>
+
+</div>
 
     <a-scene
         embedded
@@ -271,14 +388,15 @@
             </a-text>
 
             <!-- NEW LIGHTWEIGHT PORTAL MODEL -->
-            <a-entity
-                gltf-model="url(assets/portal.glb)"
-                position="0 0 0"
-                rotation="0 0 0"
-                scale="1 1 1"
-                class="clickable"
-                gesture-handler>
-            </a-entity>
+           <a-entity
+    id="portalModel"
+    gltf-model="url(assets/portal.glb)"
+    position="0 0 0"
+    rotation="0 0 0"
+    scale="0.35 0.35 0.35"
+    class="clickable"
+    gesture-handler>
+          </a-entity>
 
         </a-marker>
 
@@ -296,6 +414,15 @@
 
 
     <script>
+        const portalModel = document.getElementById("portalModel");
+const neonScreen = document.getElementById("neonScreen");
+
+portalModel.addEventListener("click", function () {
+    neonScreen.style.display = "flex";
+});
+        document.getElementById("enterArchive").addEventListener("click", function () {
+    neonScreen.style.display = "none";
+});
         function openPanel(id) {
             document.getElementById(id).style.display = "block";
         }
@@ -333,6 +460,14 @@
                     .catch(function() {});
             }
         }, { once: true });
+        
+        const portalModel = document.getElementById("portalModel");
+
+if (window.innerWidth >= 700) {
+    portalModel.setAttribute("scale", "0.7 0.7 0.7");
+} else {
+    portalModel.setAttribute("scale", "0.35 0.35 0.35");
+}
     </script>
 
 </body>
