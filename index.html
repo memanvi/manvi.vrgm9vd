@@ -377,23 +377,23 @@
             cursor="fuse: false; rayOrigin: mouse;">
 
             <!-- WELCOME TEXT INSIDE AR SPACE -->
-            <a-text
-                value="WELCOME!"
-                position="0 1.2 0"
-                rotation="-90 0 0"
-                align="center"
-                color="#FFFFFF"
-                width="4"
-                class="clickable">
+           <a-text
+    value="WELCOME!"
+    position="0 1.8 0"
+    rotation="-90 0 0"
+    align="center"
+    color="#FFFFFF"
+    width="4"
+    class="clickable">
             </a-text>
 
             <!-- NEW LIGHTWEIGHT PORTAL MODEL -->
-          <a-entity
+         <a-entity
     id="portalModel"
     gltf-model="url(assets/portal.glb)"
-    position="0 0 0"
-    rotation="-90 0 0"
-    scale="0.35 0.35 0.35"
+    position="0 0.1 0"
+    rotation="-90 90 0"
+    scale="0.20 0.20 0.20"
     class="clickable"
     gesture-handler>
         </a-entity>
@@ -428,9 +428,14 @@
     const portalModel = document.getElementById("portalModel");
     const neonScreen = document.getElementById("neonScreen");
 
-    portalModel.addEventListener("click", function () {
-        neonScreen.style.display = "flex";
-    });
+   function enterNeonScreen() {
+    neonScreen.style.display = "flex";
+}
+
+portalModel.addEventListener("click", enterNeonScreen);
+portalModel.addEventListener("mousedown", enterNeonScreen);
+portalModel.addEventListener("touchstart", enterNeonScreen);
+       
 
     document.getElementById("enterArchive").addEventListener("click", function () {
         neonScreen.style.display = "none";
