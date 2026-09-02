@@ -379,7 +379,7 @@
             <!-- WELCOME TEXT INSIDE AR SPACE -->
            <a-text
     value="WELCOME!"
-    position="0 1.8 0"
+    position="0 1.5 0"
     rotation="-90 0 0"
     align="center"
     color="#FFFFFF"
@@ -389,15 +389,16 @@
 
             <!-- NEW LIGHTWEIGHT PORTAL MODEL -->
          <a-entity
-    id="portalModel"
-    gltf-model="url(assets/portal.glb)"
-    position="0 0.1 0"
-    rotation="-90 90 0"
-    scale="0.20 0.20 0.20"
-    class="clickable"
-    gesture-handler>
-        </a-entity>
+  id="portalModel"
+  gltf-model="url(assets/portal.glb)"
+  position="0 0 0"
+  rotation="0 0 0"
+  scale="0.12 0.12 0.12"
+  class="clickable"
+  gesture-handler>
+</a-entity>
 
+            
     </a-scene>
 
 
@@ -432,9 +433,13 @@
     neonScreen.style.display = "flex";
 }
 
-portalModel.addEventListener("click", enterNeonScreen);
-portalModel.addEventListener("mousedown", enterNeonScreen);
-portalModel.addEventListener("touchstart", enterNeonScreen);
+portalModel.addEventListener("click", function () {
+  neonScreen.style.display = "flex";
+});
+
+portalModel.addEventListener("touchend", function () {
+  neonScreen.style.display = "flex";
+});
        
 
     document.getElementById("enterArchive").addEventListener("click", function () {
