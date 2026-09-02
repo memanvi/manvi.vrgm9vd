@@ -1,282 +1,283 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-```
+    <title>Immersive India</title>
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/gesture-detector@4.0.5/dist/gesture-detector.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/gesture-handler@4.0.5/dist/gesture-handler.min.js"></script>
+
     <style>
-        .ui-button {
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 220px;
-            padding: 13px 18px;
-            border: 0;
-            border-radius: 25px;
-            background: rgba(20, 20, 20, 0.88);
-            color: white;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            z-index: 9999;
-            cursor: pointer;
-        }
-
-        #companyButton {
-            bottom: 125px;
-        }
-
-        #museumButton {
-            bottom: 70px;
-        }
-
-        #aboutButton {
-            bottom: 15px;
-        }
-
-        .info-panel {
-            display: none;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 78%;
-            max-width: 380px;
-            padding: 24px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.96);
-            color: #111;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            z-index: 10000;
+        * {
             box-sizing: border-box;
         }
 
-        .info-panel h2 {
-            margin-top: 0;
-            font-size: 24px;
-        }
-
-        .info-panel p {
-            line-height: 1.5;
-            font-size: 15px;
-        }
-
-        .close-button {
-            margin-top: 12px;
-            padding: 10px 20px;
-            border: 0;
-            border-radius: 20px;
-            background: #111;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        #title {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
+        body {
+            margin: 0;
+            overflow: hidden;
             font-family: Arial, sans-serif;
-            font-size: 22px;
-            font-weight: bold;
-            text-align: center;
-            z-index: 9999;
-            text-shadow: 0 2px 5px black;
+        }
+
+        #ui {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
             pointer-events: none;
         }
 
-        #musicButton {
-            position: fixed;
-            top: 58px;
-            right: 15px;
-            z-index: 9999;
-            border: 0;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            background: rgba(20,20,20,0.85);
+        #title {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
             color: white;
-            font-size: 18px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-align: center;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            white-space: nowrap;
         }
 
-        .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 15px;
-}
+        #main-buttons {
+            position: absolute;
+            bottom: 105px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(82%, 340px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: auto;
+        }
 
-.social-button {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 2px solid white;
-    background: rgba(0, 0, 0, 0.55);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    transition: 0.2s;
-}
+        .main-button {
+            width: 100%;
+            padding: 13px 18px;
+            border: 1px solid rgba(255,255,255,0.65);
+            border-radius: 30px;
+            background: rgba(0,0,0,0.52);
+            color: white;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
 
-.social-button:hover {
-    transform: scale(1.1);
-    background: rgba(255, 255, 255, 0.2);
-}
+        .main-button:active {
+            transform: scale(0.97);
+        }
 
-.social-label {
-    text-align: center;
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    margin-top: 4px;
-}
+        #social-links {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 22px;
+            pointer-events: auto;
+        }
+
+        .social-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-button {
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.75);
+            background: rgba(0,0,0,0.58);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .social-label {
+            margin-top: 5px;
+            color: white;
+            font-size: 9px;
+            text-shadow: 0 1px 5px black;
+        }
+
+        .panel {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: min(82%, 350px);
+            padding: 24px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.78);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            text-align: center;
+            pointer-events: auto;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .close-button {
+            margin-top: 18px;
+            padding: 9px 20px;
+            border: 1px solid white;
+            border-radius: 20px;
+            background: transparent;
+            color: white;
+        }
+
+        #musicButton {
+            position: absolute;
+            top: 20px;
+            right: 18px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.7);
+            background: rgba(0,0,0,0.55);
+            color: white;
+            font-size: 16px;
+            pointer-events: auto;
+        }
     </style>
 </head>
 
-<body style="margin: 0; overflow: hidden;">
+<body>
 
-    <!-- EXISTING HEADING — KEPT -->
-    <div id="title">IMMERSIVE INDIA</div>
+    <div id="ui">
 
-    <!-- EXISTING BUTTONS — KEPT -->
-    <button id="companyButton" class="ui-button">
-        Learn About Company
-    </button>
+        <div id="title">IMMERSIVE INDIA</div>
 
-    <button id="museumButton" class="ui-button">
-        Explore Museums
-    </button>
+        <button id="musicButton">♫</button>
 
-    <button id="aboutButton" class="ui-button">
-        About Experience
-    </button>
+        <div id="main-buttons">
 
-    <div class="social-links">
+            <button class="main-button" onclick="openPanel('companyPanel')">
+                Learn About Company
+            </button>
 
-    <div>
-        <a class="social-button"
-           href="www.linkedin.com/in/manvi-82996a312"
-           target="_blank"
-           rel="noopener">
-            in
-        </a>
-        <div class="social-label">LinkedIn</div>
+            <button class="main-button" onclick="openPanel('museumPanel')">
+                Explore Museums
+            </button>
+
+            <button class="main-button" onclick="openPanel('experiencePanel')">
+                About Experience
+            </button>
+
+        </div>
+
+        <div id="social-links">
+
+            <div class="social-item">
+                <a
+                    class="social-button"
+                    href="www.linkedin.com/in/manvi-82996a312"
+                    target="_blank"
+                    rel="noopener">
+                    in
+                </a>
+                <div class="social-label">LinkedIn</div>
+            </div>
+
+            <div class="social-item">
+                <a
+                    class="social-button"
+                    href="https://memanviportfolio.framer.website/"
+                    target="_blank"
+                    rel="noopener">
+                    ↗
+                </a>
+                <div class="social-label">Portfolio</div>
+            </div>
+
+            <div class="social-item">
+                <a
+                    class="social-button"
+                    href="mailto:manvi01.k@gmail.com">
+                    ✉
+                </a>
+                <div class="social-label">Mail</div>
+            </div>
+
+        </div>
+
+        <div id="companyPanel" class="panel">
+            <h2>Immersive India</h2>
+            <p>Discover India through interactive digital experiences.</p>
+            <button class="close-button" onclick="closePanels()">Close</button>
+        </div>
+
+        <div id="museumPanel" class="panel">
+            <h2>Explore Museums</h2>
+            <p>Step into stories, objects and cultures through immersive technology.</p>
+            <button class="close-button" onclick="closePanels()">Close</button>
+        </div>
+
+        <div id="experiencePanel" class="panel">
+            <h2>About Experience</h2>
+            <p>Scan the visiting card and enter an interactive world of India.</p>
+            <button class="close-button" onclick="closePanels()">Close</button>
+        </div>
+
     </div>
 
-    <div>
-        <a class="social-button"
-           href="https://memanviportfolio.framer.website/"
-           target="_blank"
-           rel="noopener">
-            ↗
-        </a>
-        <div class="social-label">Portfolio</div>
-    </div>
-
-    <div>
-        <a class="social-button"
-           href="mailto:manvio1.k@gmail.com">
-            ✉
-        </a>
-        <div class="social-label">Mail</div>
-    </div>
-
-</div>
-
-    <!-- INFORMATION PANELS — KEPT -->
-    <div id="companyPanel" class="info-panel">
-        <h2>About the Company</h2>
-        <p>
-            Discover Immersive India through interactive experiences
-            that bring Indian culture, stories and heritage into a
-            digital space.
-        </p>
-        <button class="close-button" onclick="closePanels()">Close</button>
-    </div>
-
-    <div id="museumPanel" class="info-panel">
-        <h2>Explore Museums</h2>
-        <p>
-            Step into a collection of immersive cultural experiences
-            exploring India's history, traditions, stories and heritage.
-        </p>
-        <p>
-            Discover new stories and perspectives through interactive
-            digital experiences.
-        </p>
-        <button class="close-button" onclick="closePanels()">Close</button>
-    </div>
-
-    <div id="aboutPanel" class="info-panel">
-        <h2>AR Visiting Card</h2>
-        <p>
-            Scan the visiting card to reveal a 3D experience and
-            explore additional information through the interactive
-            buttons.
-        </p>
-        <button class="close-button" onclick="closePanels()">Close</button>
-    </div>
-
-    <!-- MUSIC CONTROL -->
-    <button id="musicButton">🔇</button>
-
-    <!-- MUSIC -->
-    <audio
-        id="backgroundMusic"
-        src="assets/delosound-mystery-mystic-mystical-music-442826.mp3"
-        loop
-        preload="auto">
-    </audio>
 
     <a-scene
-        vr-mode-ui="enabled: false;"
-        loading-screen="enabled: false;"
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-        id="scene"
         embedded
+        vr-mode-ui="enabled: false"
         gesture-detector
-    >
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
 
         <a-marker
-            id="animated-marker"
+            id="markerA"
             type="pattern"
             preset="custom"
             url="assets/marker.patt"
             raycaster="objects: .clickable"
             emitevents="true"
-            cursor="fuse: false; rayOrigin: mouse;"
-            id="markerA"
-        >
+            cursor="fuse: false; rayOrigin: mouse;">
 
-            <!-- WELCOME TEXT IS INSIDE THE AR WORLD -->
+            <!-- WELCOME TEXT INSIDE AR SPACE -->
             <a-text
                 value="WELCOME!"
+                position="0 1.2 0"
+                rotation="-90 0 0"
                 align="center"
                 color="#FFFFFF"
-                width="3"
-                position="0 1.2 0"
-                rotation="-90 0 0">
+                width="4"
+                class="clickable">
             </a-text>
 
-            <!-- YOUR 3D MUTATING CUBE -->
+            <!-- NEW LIGHTWEIGHT PORTAL MODEL -->
             <a-entity
-    gltf-model="url(assets/Mutating-Cube.glb)"
-    position="0 0.5 0"
-    rotation="0 0 0"
-    scale="1 1 1"
-    class="clickable"
-    gesture-handler>
+                gltf-model="url(assets/portal.glb)"
+                position="0 0 0"
+                rotation="0 0 0"
+                scale="1 1 1"
+                class="clickable"
+                gesture-handler>
             </a-entity>
 
         </a-marker>
@@ -285,87 +286,54 @@
 
     </a-scene>
 
+
+    <audio
+        id="backgroundMusic"
+        src="assets/delosound-mystery-mystical-music-442826.mp3"
+        loop
+        preload="auto">
+    </audio>
+
+
     <script>
-
-        /* --------------------------------
-           EXISTING BUTTON INTERACTIONS
-        -------------------------------- */
-
-        const companyButton = document.getElementById("companyButton");
-        const museumButton = document.getElementById("museumButton");
-        const aboutButton = document.getElementById("aboutButton");
-
-        const companyPanel = document.getElementById("companyPanel");
-        const museumPanel = document.getElementById("museumPanel");
-        const aboutPanel = document.getElementById("aboutPanel");
-
-        companyButton.addEventListener("click", function () {
-            closePanels();
-            companyPanel.style.display = "block";
-        });
-
-        museumButton.addEventListener("click", function () {
-            closePanels();
-            museumPanel.style.display = "block";
-        });
-
-        aboutButton.addEventListener("click", function () {
-            closePanels();
-            aboutPanel.style.display = "block";
-        });
-
-        function closePanels() {
-            companyPanel.style.display = "none";
-            museumPanel.style.display = "none";
-            aboutPanel.style.display = "none";
+        function openPanel(id) {
+            document.getElementById(id).style.display = "block";
         }
 
-
-        /* --------------------------------
-           BACKGROUND MUSIC
-        -------------------------------- */
+        function closePanels() {
+            document.querySelectorAll(".panel").forEach(function(panel) {
+                panel.style.display = "none";
+            });
+        }
 
         const music = document.getElementById("backgroundMusic");
         const musicButton = document.getElementById("musicButton");
 
-        let musicStarted = false;
-
-        function startMusic() {
-            if (!musicStarted) {
-                music.volume = 0.35;
-
-                music.play().then(function () {
-                    musicStarted = true;
-                    musicButton.textContent = "🔊";
-                }).catch(function () {
-                    console.log("Music waiting for user interaction.");
-                });
-            }
-        }
-
-        /*
-         * Mobile browsers usually require user interaction
-         * before allowing audio to play.
-         */
-        document.addEventListener("click", startMusic, { once: true });
-
-        musicButton.addEventListener("click", function (event) {
-
-            event.stopPropagation();
-
+        musicButton.addEventListener("click", function() {
             if (music.paused) {
-                music.play();
-                musicButton.textContent = "🔊";
+                music.play()
+                    .then(function() {
+                        musicButton.textContent = "🔊";
+                    })
+                    .catch(function(error) {
+                        console.log("Music could not start:", error);
+                    });
             } else {
                 music.pause();
-                musicButton.textContent = "🔇";
+                musicButton.textContent = "♫";
             }
-
         });
 
+        document.addEventListener("click", function() {
+            if (music.paused) {
+                music.play()
+                    .then(function() {
+                        musicButton.textContent = "🔊";
+                    })
+                    .catch(function() {});
+            }
+        }, { once: true });
     </script>
 
 </body>
-```
-
 </html>
